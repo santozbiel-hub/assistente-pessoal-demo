@@ -1,0 +1,15 @@
+# ===== ASSISTENTE — núcleo =====
+anthropic==0.96.0
+python-dotenv==1.2.2
+
+# ===== Busca semântica (era torch 2.2 — Mac Intel) =====
+# Mac Intel: torch 2.2.2 é a última versão com build x86_64 (2.3+ só Apple Silicon)
+torch==2.2.2
+# torch 2.2.2 foi compilado contra NumPy 1.x — NumPy 2 quebra o binário
+numpy<2
+# transformers >=4.52 recarrega modelos antigos com pesos re-inicializados
+# (embeddings aleatórios, falha SILENCIOSA) — segurar na era 4.4x/4.51
+transformers>=4.41,<4.52
+# sentence-transformers 4.x casa com essa era
+sentence-transformers<5
+

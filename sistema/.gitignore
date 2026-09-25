@@ -1,0 +1,14 @@
+node_modules/
+.next/
+dist/
+.env
+.env.*
+!.env.example
+.vercel/
+.netlify/
+__pycache__/
+.venv/
+conversations/
+vault/
+backend/data/*.json
+*.log

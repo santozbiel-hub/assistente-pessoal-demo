@@ -1,47 +1,25 @@
 # Assistente Pessoal
 
-Protótipo interativo, independente, com identidade genérica e dados fictícios.
+O código do assistente está em [`sistema/`](sistema/): backend Python/FastAPI, roteamento de provedores, memória, controles de confiança e interface HTML. A demonstração estática antiga na raiz permanece separada e usa respostas simuladas.
 
-## Problema
+Conversas, memórias, documentos pessoais, tokens e arquivos de ambiente do projeto original não foram incluídos. Agenda e transações começam vazias. O nome foi generalizado, inclusive no namespace Python e variáveis de configuração.
 
-Tarefas e notas separadas tornam mais difícil consultar o contexto do dia.
-
-## Experimente
-
-Consultar respostas programadas; criar, concluir e remover tarefas; criar e remover notas; consultar o estado atual da agenda e das notas pela conversa.
-
-1. Adicione uma tarefa na Agenda.
-2. Pergunte sobre sua agenda na Conversa.
-3. Crie uma nota e use Consultar notas para verificar seu conteúdo.
-
-## Executar localmente
-
-Com Python 3 instalado, execute na pasta do repositório:
-
-```bash
-python3 -m http.server 8080
+## Executar
+```sh
+cd sistema
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt -r backend/requirements_web.txt
+cp .env.example .env
+# Defina um token próprio e configure o provedor escolhido.
+mkdir -p vault/System vault/5-Memory
+uvicorn backend.api:app --host 127.0.0.1 --port 8420
 ```
+Em outro terminal, rode `python -m http.server 8080 --directory sistema/frontend` na raiz do repositório. Abra http://localhost:8080 e informe a URL local da API e o token configurado.
 
-Abra http://localhost:8080. Não são necessárias contas, credenciais, instalação de pacotes ou configuração de banco.
-
-## Tecnologias e decisões
-
-- HTML semântico, CSS responsivo e JavaScript sem dependências de execução.
-- Estado somente em memória: recarregar restaura o cenário de demonstração.
-- Conteúdo de formulários escapado antes de ser inserido no HTML.
-- Política de conteúdo bloqueia conexões externas da aplicação.
-- Nomes, clientes, veículos e registros são demonstrativos.
+Personalize o prompt em `vault/System/prompt-base.md`. O conteúdo de vault não é versionado. Confira o restante dos arquivos esperados em `assistente/memory.py` para ampliar a memória. O fluxo de terminal é iniciado com `python main.py` dentro de sistema.
 
 ## Limites
+O chat real depende de um provedor e configuração local. O adaptador original pode retornar um eco quando o núcleo não está disponível; isso não é uma resposta de modelo. O servidor mantém uma conversa em memória e não é uma aplicação multiusuário. Esta publicação não inclui a interface experimental separada nem pressupõe sua integração com a API.
 
-As respostas são programadas: não há modelo de IA, RAG, acesso a documentos, automação externa ou envio de mensagens. Não use este protótipo para registros reais. Os dados desaparecem ao recarregar.
-
-## Estrutura
-
-- `index.html`: estrutura e navegação.
-- `style.css`: estilos responsivos.
-- `app.js`: conversa programada, tarefas e notas.
-
-## Licença
-
-Nenhuma licença de código aberto foi concedida neste repositório.
+O objetivo é tornar o código inspecionável e reutilizável, mantendo privados os dados do projeto original. Use um ambiente próprio para testar integrações e persistência.
